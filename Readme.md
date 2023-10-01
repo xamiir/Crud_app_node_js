@@ -5,16 +5,24 @@
 ### clone the project
 
 ```
-git clone
+git clone https://github.com/xamiir/Express-upload-image.git
 
 
 
+
+```
+
+### go to the project directory
+
+```
+for example: cd Express-upload-image
 
 ```
 
 ### install all dependencies
 
 ```
+
 npm install
 
 ```
@@ -42,6 +50,11 @@ https://www.mongodb.com/try/download/compass
 ### run the project
 
 ```
+
 npm start
+
+```
+
+```
 
 ```
