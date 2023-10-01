@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/users");
 const multer = require("multer");
 const fs = require("fs");
+const session = require("express-session");
 
 // upload image
 
@@ -18,8 +19,27 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// if name, email, phone is not empty then redirect home page otherwise redirect add page
+
+// const validateMiddleware = (req, res, next) => {
+//   if (!req.body.name == "" || !req.body.email == "" || !req.body.phone == "") {
+//     return res.redirect("/add");
+//   }
+//   next();
+// };
+
 // add user
+
 router.post("/add", upload.single("image"), (req, res) => {
+  // name, email, phone is empty then redirect add page otherwise redirect home page
+  if (
+    req.body.name == "" ||
+    req.body.email == "" ||
+    req.body.phone == "" ||
+    req.file == undefined
+  ) {
+    return res.redirect("/add");
+  }
   let user = new User({
     name: req.body.name,
     email: req.body.email,
@@ -40,6 +60,30 @@ router.post("/add", upload.single("image"), (req, res) => {
       console.log(err);
     });
 });
+
+// router.post("/add", upload.single("image"), (req, res) => {
+//   let user = new User({
+//     name: req.body.name,
+//     email: req.body.email,
+//     phone: req.body.phone,
+//     image: req.file.filename,
+//   });
+
+//   user
+//     .save()
+//     .then(() => {
+//       req.session.message = {
+//         type: "success",
+//         message: "User added successfully",
+//       };
+//       res.redirect("/");
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
+
+// form validation middleware
 
 router.get("/", (req, res) => {
   User.find()
@@ -113,6 +157,19 @@ router.get("/delete/:id", async (req, res) => {
   }
 });
 
+// search user by name or email or phone
+
+router.post("/search", (req, res) => {
+  let search = req.body.search;
+  User.find({ $or: [{ name: search }, { email: search }, { phone: search }] })
+    .then((data) => {
+      res.render("index", { title: "Search result", users: data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 // about page
 router.get("/about", (req, res) => {
   res.render("about", { title: "About us" });
@@ -123,4 +180,5 @@ router.get("/about", (req, res) => {
 router.get("/contect", (req, res) => {
   res.render("contect", { title: "Contact us" });
 });
+
 module.exports = router;

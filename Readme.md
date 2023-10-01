@@ -1,4 +1,4 @@
-## CRUD App With Image Upload Using NodeJs, ExpressJs, MongoDB & EJS Templating Engine
+# CRUD App With Image Upload Using NodeJs, ExpressJs, MongoDB & EJS Templating Engine
 
 ## Project setup
 
@@ -52,9 +52,5 @@ https://www.mongodb.com/try/download/compass
 ```
 
 npm start
-
-```
-
-```
 
 ```
