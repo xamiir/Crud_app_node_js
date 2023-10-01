@@ -55,6 +55,42 @@ router.get("/add", (req, res) => {
   res.render("add-users", { title: "Add users" });
 });
 
+// edit user
+router.get("/edit/:id", (req, res) => {
+  let id = req.params.id;
+  User.findById(id)
+    .then((data) => {
+      res.render("edit_users", { title: "Edit users", user: data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+// update user
+router.post("/update/:id", upload.single("image"), (req, res) => {
+  let id = req.params.id;
+  let update = {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+  };
+  if (req.file) {
+    update.image = req.file.filename;
+  }
+  User.findByIdAndUpdate(id, { $set: update })
+    .then(() => {
+      req.session.message = {
+        type: "success",
+        message: "User updated successfully",
+      };
+      res.redirect("/");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 router.get("/delete/:id", async (req, res) => {
   let id = req.params.id;
   try {
