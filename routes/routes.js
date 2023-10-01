@@ -90,6 +90,7 @@ router.post("/update/:id", upload.single("image"), (req, res) => {
       console.log(err);
     });
 });
+// delete user
 
 router.get("/delete/:id", async (req, res) => {
   let id = req.params.id;
@@ -110,5 +111,16 @@ router.get("/delete/:id", async (req, res) => {
   } catch (err) {
     res.json({ message: err.message, type: "danger" });
   }
+});
+
+// about page
+router.get("/about", (req, res) => {
+  res.render("about", { title: "About us" });
+});
+
+// contact page
+
+router.get("/contect", (req, res) => {
+  res.render("contect", { title: "Contact us" });
 });
 module.exports = router;
